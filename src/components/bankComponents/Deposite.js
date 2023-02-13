@@ -5,6 +5,7 @@ const Deposite = () => {
   const {deposite} =   useSelector(state => state.bank)
 
 
+
   return (
     <div className="bg-green-400 p-8 sm:rounded-md ">
       <h4 className="text-2xl">Deposite</h4>

@@ -1,4 +1,4 @@
-
+import * as at from './actionTypes'
 const initialState = {
   balance: 1000,
   deposite: 0,
@@ -6,7 +6,26 @@ const initialState = {
 };
 
 const bankReducer = (state = initialState, action) => {
-  return state;
+  switch (action.type) {
+    case at.DEPOSITE:
+      const depositeAmount = parseFloat(action.payload)    
+      return {
+        ...state,
+        deposite:state.deposite + depositeAmount,
+        balance: state.balance + depositeAmount
+      }
+    case at.WITHDRAW:
+      const withDrawAmount = parseFloat(action.payload);
+      console.log(withDrawAmount);
+      return {
+        ...state, 
+        withdraw:state.withdraw + withDrawAmount,
+        balance: state.balance - withDrawAmount
+      }
+    default:
+      return state;
+  }
+ 
 };
 
 
