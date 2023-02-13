@@ -1,4 +1,4 @@
-import React, { useRef } from 'react'
+import React, { useRef, useState } from 'react'
 import { useDispatch } from 'react-redux';
 import { moneyAction } from '../../redux/actions';
 import * as actionTypes from "../../redux/actionTypes";
@@ -6,13 +6,21 @@ import * as actionTypes from "../../redux/actionTypes";
 const AddWithdraw = () => {
   const dispatch = useDispatch();
   const inputRef = useRef(0)
+  const [inputError, setInputError] = useState(false);
 
   const withdraw = ()=> {
-    const inputValue = inputRef.current.value 
-    console.log(inputValue);
-    dispatch(moneyAction(inputValue, actionTypes.WITHDRAW));
+    const inputValue = parseFloat(inputRef.current.value);
+  //  console.log( !isNaN(inputValue));
 
-    inputRef.current.value = ''
+    if (typeof inputValue === "number" && !isNaN(inputValue)) {
+      dispatch(moneyAction(inputValue, actionTypes.WITHDRAW));
+      inputRef.current.value = "";
+       setInputError(false);
+    } else {
+      // console.log(inputValue);
+      setInputError(true);
+    }
+   
 
   }
 
@@ -36,6 +44,10 @@ const AddWithdraw = () => {
           Withdraw
         </button>
       </div>
+      {
+        inputError ? <div className="p-4 text-white text-xl mt-4 rounded-md bg-green-400" >Input must be number and can't be empty </div>
+        :null
+      }
     </div>
   );
 }

@@ -1,4 +1,4 @@
-import React, { useRef } from 'react'
+import React, { useRef, useState } from 'react'
 import { useDispatch } from 'react-redux';
 import { moneyAction } from "../../redux/actions";
 import * as actionTypes from '../../redux/actionTypes'
@@ -6,16 +6,18 @@ import * as actionTypes from '../../redux/actionTypes'
 const AddDeposite = () => {
   const dispatch = useDispatch()
  const inputRef  = useRef(0)
+  const [inputError, setInputError] = useState(false);
 
   const deposite = (e)=> {
-   const inputValue = inputRef.current.value 
+   const inputValue = parseFloat(inputRef.current.value);
    // console.log(inputValue);
-  
-   dispatch(moneyAction(inputValue, actionTypes.DEPOSITE));
-
-   inputRef.current.value = ''
-
-
+    if (typeof inputValue === "number" && !isNaN(inputValue)){
+       dispatch(moneyAction(inputValue, actionTypes.DEPOSITE));
+       inputRef.current.value = "";
+       setInputError(false)
+    }else {
+         setInputError(true);
+    }   
   }
 
   return (
@@ -37,6 +39,11 @@ const AddDeposite = () => {
           Deposite
         </button>
       </div>
+      {inputError ? (
+        <div className="p-4 text-white text-xl mt-4 rounded-md bg-red-400">
+          Input must be number and can't be empty{" "}
+        </div>
+      ) : null}
     </div>
   );
 }
